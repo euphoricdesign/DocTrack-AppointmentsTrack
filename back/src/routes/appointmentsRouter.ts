@@ -6,6 +6,6 @@ const appointmentsRouter: Router = Router()
 appointmentsRouter.get('/', getAllAppointments) 
 appointmentsRouter.get('/:id', getAppointment) 
 appointmentsRouter.post('/schedule', addNewAppointment) 
-appointmentsRouter.put('/cancel', cancelAppointment) 
+appointmentsRouter.put('/cancel/:id', cancelAppointment) 
 
 export default appointmentsRouter

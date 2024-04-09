@@ -1,10 +1,10 @@
 interface IUser {
     id: number,
     name: string,
-    lastname: string,
+    birthdate: string,
     email: string,
-    phone: number,
-    type: string
+    nDni: number,
+    credentialsId: number
 }
 
 export default IUser
