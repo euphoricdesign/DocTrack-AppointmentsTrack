@@ -1,57 +1,60 @@
-import IAppointment, { AppointmentStatus } from "../interfaces/IAppointment";
 import AppointmentDto from "../dto/appointmentDto";
+import { AppDataSource } from "../config/data-source";
+import { Appointment } from "../entities/Appointment";
+import { User } from "../entities/User";
 
-const appointments: IAppointment[] = [
-    {
-        id: 1,
-        date: "01/05/2000", //* PASAR ESTO A: New Date("24/04/2024")
-        time: "10:30",
-        userId: 1,
-        status: AppointmentStatus.Active
-    }
-]
+const AppointmentModel = AppDataSource.getRepository(Appointment)
+const UserModel = AppDataSource.getRepository(User)
 
-let id = 1
-
-export const getAllAppointmentsService = async (): Promise<IAppointment[]> => {
+export const getAllAppointmentsService = async (): Promise<Appointment[]> => {
     try {
-        const allAppointments: IAppointment[] = appointments
+        const allAppointments = AppointmentModel.find({
+            relations: {
+                user: true
+            }
+        })
         return allAppointments
     } catch (error) {
-        throw error
-    }
-}
-
-export const getAppointmentService = async (appointmentId: number): Promise<IAppointment | undefined> => {
-    try {
-        const appointment: IAppointment | undefined = appointments.find(appointment => appointment.id === appointmentId)
-        return appointment
-    } catch (error) {
+        console.error('Hubo un problema con la operación:', error);
         throw error;
     }
 }
 
-export const addNewAppointmentService = async (newAppointment: AppointmentDto, userId: number): Promise<IAppointment> => {
-    id++
-    if (!userId) {
-        throw Error("Se debe proporcionar un ID de usuario para crear un turno.")
+export const getAppointmentService = async (appointmentId: number): Promise<Appointment | null> => {
+    try {
+        const appointment: Appointment | null = await AppointmentModel.findOne({
+            where: { id: appointmentId },
+            relations: ['user']
+        })
+        return appointment
+    } catch (error) {
+        console.error('Hubo un problema con la operación:', error);
+        throw error;
     }
-
-    const appointmentWUserId: IAppointment = {
-        id: id,
-        ...newAppointment,
-        userId: userId,
-        status: AppointmentStatus.Active
-    }
-
-    appointments.push(appointmentWUserId)
-    return appointmentWUserId
-
 }
 
-export const cancelAppointmentService = async (appointmentId: number): Promise<IAppointment> => {
-    const appointmentIndex: number = appointments.findIndex(appointment => appointment.id === appointmentId)
-    appointments[appointmentIndex].status = AppointmentStatus.Cancelled
+export const addNewAppointmentService = async (newAppointment: AppointmentDto): Promise<Appointment> => {
+    try {
+        const createdAppointment = await AppointmentModel.create(newAppointment)
+        await AppointmentModel.save(createdAppointment)
+
+        const user: User | null = await UserModel.findOneBy({ id: newAppointment.userId })
+        if (user) createdAppointment.user = user
     
-    return appointments[appointmentIndex]
+        await AppointmentModel.save(createdAppointment)
+        return createdAppointment
+    } catch (error) {
+        console.error('Hubo un problema con la operación:', error);
+        throw error;
+    }
 }
+
+// export const cancelAppointmentService = async (appointmentId: number) => {
+//     const canceledAppointment = AppointmentModel.findOneBy({id: appointmentId})
+//     console.log(canceledAppointment)
+
+//     const appointmentIndex: number = appointments.findIndex(appointment => appointment.id === appointmentId)
+//     appointments[appointmentIndex].status = AppointmentStatus.Cancelled
+    
+//     return appointments[appointmentIndex]
+// }

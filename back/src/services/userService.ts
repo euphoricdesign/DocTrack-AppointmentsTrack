@@ -1,55 +1,55 @@
 import UserDto from "../dto/userDto"
-import IUser from "../interfaces/IUser"
+import { User } from "../entities/User"
+import { Credential } from "../entities/Credential"
 import { createCredentialsService } from "./credentialService"
+import { AppDataSource } from "../config/data-source"
 
-const users: IUser[] = [
-    {
-        id: 1,
-        name: "Merlina Villecco",
-        birthdate: "01/04/1998",
-        email: "mervillecco@mail.com",
-        nDni: 41182238,
-        credentialsId: 1
-    }
-]
+const UserModel = AppDataSource.getRepository(User)
 
-let id = 1
-
-export const getAllUsersService = async (): Promise<IUser[]> => {
+export const getAllUsersService = async (): Promise<User[]> => {
     try {
-        const allUsers = users //* simula llamada a la db 
+        const allUsers = await UserModel.find({
+            relations: {
+                appointments: true
+            }
+        })
         return allUsers
     } catch (error) {
-        throw Error("Error de la base de datos al buscar usuarios")
-    }
-}
-
-export const getUserService = async (userId: number): Promise<IUser | undefined> => {
-    try {
-        const user = users.find(user => user.id === userId)
-        return user
-    } catch (error) {
+        console.error('Hubo un problema con la operación:', error);
         throw error;
     }
 }
 
-export const registerNewUserService = async (userData: UserDto) => {
-    id++
-
-    const newCredentials = await createCredentialsService({username: userData.username, password: userData.password})
-
-    const newUser: IUser = {
-        id: id,
-        name: userData.name,
-        birthdate: userData.birthdate,
-        email: userData.email,
-        nDni: userData.nDni,
-        credentialsId: newCredentials
+export const getUserService = async (userId: number): Promise<User | null> => {
+    try {
+        const user = await UserModel.findOneBy({id: userId})
+        return user
+    } catch (error) {
+        console.error('Hubo un problema con la operación:', error);
+        throw error;
     }
-    console.log(newUser)
+}
 
-    users.push(newUser)
-    return newUser
+export const registerNewUserService = async (userData: UserDto): Promise<User> => {
+    try {
+        const newCredentials: Credential = await createCredentialsService({ username: userData.username, password: userData.password })
+
+        const newUser = {
+            name: userData.name,
+            email: userData.email,
+            birthdate: userData.birthdate,
+            nDni: userData.nDni
+        }
+        
+        const createdUser: User = await UserModel.create(newUser)
+    
+        createdUser.credential = newCredentials
+        await UserModel.save(createdUser)
+        return createdUser
+    } catch (error) {
+        console.error('Hubo un problema con la operación:', error);
+        throw error;
+    }
 }
 
 export const loginUserService = async () => {
