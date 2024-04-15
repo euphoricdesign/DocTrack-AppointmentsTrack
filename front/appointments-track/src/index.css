@@ -1,0 +1,61 @@
+:root {
+  --body-color: #f3f9ff;
+  --sidebar-color: #fff;
+  --primary-color: #2760a7;
+  --primary-color-light: #f3f9ff;
+  --toggle-color: #ddd;
+  --text-color: #707070;
+
+  --tran-05: all 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--body-color);
+  transition: var(--tran-05);
+}
+
+body.dark {
+  --body-color: #18191a;
+  --sidebar-color: #242526;
+  --primary-color: #3a3b3c;
+  --primary-color-light: #3a3b3c;
+  --toggle-color: #fff;
+  --text-color: #ccc;
+}
+
+body.dark .sidebar header .toggle {
+  color: var(--text-color);
+}
+
+body.dark .sidebar li a:hover .icon,
+body.dark .sidebar li a:hover .text {
+  color: var(--text-color);
+}
+
+body.dark .mode .sun-moon i.sun {
+  opacity: 1;
+}
+body.dark .mode .sun-moon i.moon {
+  opacity: 0;
+}
+
+body.dark .switch::before {
+  left: 20px;
+}
+
+body.dark .home .text {
+  color: var(--text-color);
+}
+
+::selection {
+  background-color: var(--primary-color);
+  color: #fff;
+}
