@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getAllUsersService, getUserService, registerNewUserService } from "../services/userService";
+import { getAllUsersService, getUserService, loginUserService, registerNewUserService } from "../services/userService";
 import { User } from "../entities/User";
 import { catchAsync } from "../utils/catchAsync";
 
@@ -21,6 +21,9 @@ export const registerNewUser = catchAsync(async (req: Request, res: Response) =>
 })
 
 export const loginUser = catchAsync(async (req: Request, res: Response) => {
-    res.json({message: "Pronto se podrá loguear un usuario"})
+    const { username, password } = req.body;
+    const response = await loginUserService({ username, password })
+
+    res.status(200).json(response)
 })
 

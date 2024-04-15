@@ -11,6 +11,7 @@ server.use(express.json())
 server.use(router)
 
 server.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    console.log(err.statusCode)
     res.status(err.statusCode || 500).json({ error: err.message })
 })
 

@@ -2,30 +2,46 @@ import UserDto from "../dto/userDto"
 import { User } from "../entities/User"
 import { Credential } from "../entities/Credential"
 import { createCredentialsService } from "./credentialService"
-import { AppDataSource } from "../config/data-source"
+import UserRepository from "../repositories/UserRepository"
+import CredentialRepository from "../repositories/CredentialRepository"
 
-const UserModel = AppDataSource.getRepository(User)
+
+
+export class CustomError extends Error {
+    statusCode: number;
+  
+    constructor(message: string, statusCode: number) {
+      super(message);
+      this.statusCode = statusCode;
+    }
+  }
 
 export const getAllUsersService = async (): Promise<User[]> => {
     try {
-        const allUsers = await UserModel.find({
+        const allUsers: User[] = await UserRepository.find({
             relations: {
                 appointments: true
             }
         })
-        return allUsers
+        if (allUsers) return allUsers
+        else throw new CustomError("Usuarios no encontrados", 404)
     } catch (error) {
-        console.error('Hubo un problema con la operación:', error);
-        throw error;
+        throw error
+
     }
 }
 
 export const getUserService = async (userId: number): Promise<User | null> => {
     try {
-        const user = await UserModel.findOneBy({id: userId})
-        return user
+        const user = await UserRepository.findOne({
+            where: {
+              id: userId 
+            },
+            relations: ['appointments'], 
+          });
+        if (user) return user
+        else throw new CustomError("Usuario no encontrado", 404)
     } catch (error) {
-        console.error('Hubo un problema con la operación:', error);
         throw error;
     }
 }
@@ -41,17 +57,33 @@ export const registerNewUserService = async (userData: UserDto): Promise<User> =
             nDni: userData.nDni
         }
         
-        const createdUser: User = await UserModel.create(newUser)
+        const createdUser: User = await UserRepository.create(newUser)
     
         createdUser.credential = newCredentials
-        await UserModel.save(createdUser)
+        await UserRepository.save(createdUser)
         return createdUser
     } catch (error) {
-        console.error('Hubo un problema con la operación:', error);
-        throw error;
+        throw new CustomError("Error al crear el usuario", 400)
     }
 }
 
-export const loginUserService = async () => {
+export const loginUserService = async (credentials: any) => {
+    try {
+        const { username, password } = credentials
+        const credential = await CredentialRepository.findOne({
+            where: { username }
+        })
     
+        if (!credential || credential.password !== password) throw new CustomError("Credenciales invalidas", 401)
+        else {
+            const user = await UserRepository.findOneBy({id: credential.id})
+            const response = {
+                login: true,
+                user: user
+            }
+            return response
+        }
+    } catch (error) {
+        throw error
+    }
 }

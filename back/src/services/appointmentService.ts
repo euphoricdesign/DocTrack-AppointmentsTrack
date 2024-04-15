@@ -1,60 +1,61 @@
 import AppointmentDto from "../dto/appointmentDto";
-import { AppDataSource } from "../config/data-source";
-import { Appointment } from "../entities/Appointment";
+import { Appointment, AppointmentStatus } from "../entities/Appointment";
 import { User } from "../entities/User";
-
-const AppointmentModel = AppDataSource.getRepository(Appointment)
-const UserModel = AppDataSource.getRepository(User)
+import UserRepository from "../repositories/UserRepository";
+import AppointmentRepository from "../repositories/AppointmentRepository";
+import { CustomError } from "./userService";
 
 export const getAllAppointmentsService = async (): Promise<Appointment[]> => {
     try {
-        const allAppointments = AppointmentModel.find({
+        const allAppointments = AppointmentRepository.find({
             relations: {
                 user: true
             }
         })
-        return allAppointments
+        if (allAppointments) return allAppointments
+        else throw new CustomError("Turnos no encontrados", 404)
     } catch (error) {
-        console.error('Hubo un problema con la operación:', error);
         throw error;
     }
 }
 
 export const getAppointmentService = async (appointmentId: number): Promise<Appointment | null> => {
     try {
-        const appointment: Appointment | null = await AppointmentModel.findOne({
+        const appointment: Appointment | null = await AppointmentRepository.findOne({
             where: { id: appointmentId },
             relations: ['user']
         })
-        return appointment
+        if (appointment) return appointment
+        else throw new CustomError("Turno no encontrado", 404)
     } catch (error) {
-        console.error('Hubo un problema con la operación:', error);
         throw error;
     }
 }
 
 export const addNewAppointmentService = async (newAppointment: AppointmentDto): Promise<Appointment> => {
     try {
-        const createdAppointment = await AppointmentModel.create(newAppointment)
-        await AppointmentModel.save(createdAppointment)
+        const user: User | null = await UserRepository.findOneBy({ id: newAppointment.userId })
+        if (!user) throw new CustomError("ID invalido. No se encontro un usuario", 400)
+        else {
+            const createdAppointment = await AppointmentRepository.create(newAppointment)
+            await AppointmentRepository.save(createdAppointment)
 
-        const user: User | null = await UserModel.findOneBy({ id: newAppointment.userId })
-        if (user) createdAppointment.user = user
-    
-        await AppointmentModel.save(createdAppointment)
-        return createdAppointment
+            createdAppointment.user = user
+            await AppointmentRepository.save(createdAppointment)
+            return createdAppointment
+        }
     } catch (error) {
-        console.error('Hubo un problema con la operación:', error);
         throw error;
     }
 }
 
-// export const cancelAppointmentService = async (appointmentId: number) => {
-//     const canceledAppointment = AppointmentModel.findOneBy({id: appointmentId})
-//     console.log(canceledAppointment)
+export const cancelAppointmentService = async (appointmentId: number) => {
 
-//     const appointmentIndex: number = appointments.findIndex(appointment => appointment.id === appointmentId)
-//     appointments[appointmentIndex].status = AppointmentStatus.Cancelled
-    
-//     return appointments[appointmentIndex]
-// }
+    const appointment = await AppointmentRepository.findOneBy({id: appointmentId})
+
+    if (!appointment) throw new CustomError("Turno no encontrado", 404)
+    else {
+        appointment.status = AppointmentStatus.Cancelled
+        await AppointmentRepository.save(appointment)
+    }
+}

@@ -1,9 +1,6 @@
-import { AppDataSource } from "../config/data-source";
 import CredentialsDto from "../dto/credentialsDto";
 import { Credential } from "../entities/Credential";
-
-
-const CredentialModel = AppDataSource.getRepository(Credential)
+import CredentialRepository from "../repositories/CredentialRepository";
 
 export const createCredentialsService = async (credentials: CredentialsDto): Promise<Credential> => {
     try {
@@ -11,7 +8,7 @@ export const createCredentialsService = async (credentials: CredentialsDto): Pro
         newCredential.username = credentials.username
         newCredential.password = credentials.password
     
-        CredentialModel.save(newCredential)
+        CredentialRepository.save(newCredential)
         
         return newCredential
     } catch (error) {
