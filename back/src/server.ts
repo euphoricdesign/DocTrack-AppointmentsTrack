@@ -1,10 +1,13 @@
 import express, { Request, Response, NextFunction } from 'express'
 import morgan from 'morgan'
 import router from './routes/indexRouter'
+const cors = require('cors')
 
 const server = express()
 
 server.use(morgan('dev'))
+
+server.use(cors()) 
 
 server.use(express.json())
 

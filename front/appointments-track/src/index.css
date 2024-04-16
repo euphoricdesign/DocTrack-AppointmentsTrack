@@ -20,6 +20,10 @@ body {
   min-height: 100vh;
   background-color: var(--body-color);
   transition: var(--tran-05);
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
 }
 
 body.dark {
@@ -53,6 +57,14 @@ body.dark .switch::before {
 
 body.dark .home .text {
   color: var(--text-color);
+}
+
+input:focus {
+  outline: none; 
+}
+
+.container {
+  margin: 40px auto;
 }
 
 ::selection {

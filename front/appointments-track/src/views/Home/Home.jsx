@@ -1,15 +1,12 @@
-import Navbar from "../components/Navbar"
 import './Home.css'
-import img from '../assets/doctors.svg'
+import img from "../../assets/doctor.svg"
 
 
 const Home = () => {
   return (
     <>
-        <Navbar />
-
         <div className="container">
-            <h1>Buenas tardes Merlina!</h1>
+            <h1 className="greeting">Buenas tardes Merlina!</h1>
             <span>Como te sentís hoy?</span>
            
             <div className="contenedor">
@@ -20,7 +17,6 @@ const Home = () => {
                 <img className="svg-img" src={img} alt="Descripción de la imagen"></img>
             </div>
         </div>
-
     </>
   )
 }

@@ -67,7 +67,7 @@ export const registerNewUserService = async (userData: UserDto): Promise<User> =
     }
 }
 
-export const loginUserService = async (credentials: any) => {
+export const loginUserService = async (credentials: any) => { //* Ver de crear un DTO para esto 
     try {
         const { username, password } = credentials
         const credential = await CredentialRepository.findOne({
