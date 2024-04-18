@@ -19,8 +19,8 @@ export const getAppointment = catchAsync(async (req: Request, res: Response) => 
 })
 
 export const addNewAppointment = catchAsync(async (req: Request, res: Response) => {
-    const { date, time, userId } = req.body
-    const newAppointment: Appointment = await addNewAppointmentService({ date, time,  userId})
+    const { date, time, description, userId } = req.body
+    const newAppointment: Appointment = await addNewAppointmentService({ date, time, description, userId})
     res.status(201).json(newAppointment)
 })
 

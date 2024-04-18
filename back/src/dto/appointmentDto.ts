@@ -1,7 +1,8 @@
 interface AppointmentDto {
     date: string;
     time: string;
-    userId: number
+    description: string;
+    userId: number;
 
 }
 
