@@ -20,6 +20,10 @@
   --tran-05: all 0.3s ease;
 }
 
+a {
+  text-decoration: none;
+}
+
 /* ===== Sidebar ===== */
 .sidebar {
   position: fixed;

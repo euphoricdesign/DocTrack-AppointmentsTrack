@@ -8,44 +8,44 @@ export const validateForm = (fieldName, value) => {
     switch(fieldName) {
         case 'name': 
             if (!value.trim()) {
-                error = 'El nombre completo es requerido'
+                error = 'Full name is required'
             }
             break
 
         case 'email': 
             if (!value.trim()) {
                 console.log(value)
-                error = 'El correo electronico es requerido'
+                error = 'Email is required'
             } else if (!emailRegex.test(value)) {
-                error ='Correo electronico invalido'
+                error ='Invalid email address'
             }
             break
 
         case 'birthdate':
             if (!value.trim()) {
-                error = 'La fecha de nacimiento es requerida';
+                error = 'Date of birth is required';
             } else if (dateRegex.test(value)) {
-                error = 'El formato de la fecha es incorrecto. Debe ser: día/mes/año'
+                error = 'The date format is incorrect. It should be: year/month/day.'
             }
             break
         
         case 'nDni':
             if (!value) {
-                error = 'El número de DNI es requerido';
+                error = 'ID number is required';
             }
             break
 
         case 'username': 
             if (!value.trim()) {
-                error = 'El nombre de usuario es requerido'
+                error = 'Username is required'
             }
             break
 
         case 'password': 
             if (!value.trim()) {
-                error = 'La contraseña es requerida'
+                error = 'Password is required'
             } else if (!passwordRegex.test(value)) {
-                error = 'La contraseña debe tener una longitud mínima de 8 caracteres y contener al menos una letra y un dígito'
+                error = 'The password must be at least 8 characters long and contain at least one letter and one digit.'
             }
             break
         

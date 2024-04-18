@@ -65,9 +65,15 @@ input:focus {
 
 .container {
   margin: 40px auto;
+  padding: 10px;
 }
 
 ::selection {
   background-color: var(--primary-color);
   color: #fff;
+}
+
+button.disabled {
+  pointer-events: none;
+  opacity: 0.5; 
 }

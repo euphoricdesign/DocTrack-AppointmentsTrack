@@ -1,7 +1,12 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { validateForm } from '../../helpers/validateForm'
+import { Link, useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
-import { validateCredential } from '../../helpers/validateCredentials'
+
+import './Login.css'
+import { setAuthenticated, setUser } from '../../redux/userSlice'
+import { loadUserFromLocalStorage, saveUserToLocalStorage } from '../../helpers/localStorage'
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +17,11 @@ const Login = () => {
     username: "",
     password: "",
   })
+  
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.user.user)
+  const navigate = useNavigate();
+ 
 
   const handleInputChange = (e) => {
     const {name, value} = e.target
@@ -33,6 +43,20 @@ const Login = () => {
     })
   }
 
+  const validateCredential = async (credentials) => {
+    const response = await axios.post('http://localhost:3000/users/login', credentials)
+    
+    if (response.status === 200) {
+      const user = response.data.user
+      dispatch(setUser(user))
+      dispatch(setAuthenticated())
+      saveUserToLocalStorage(user)
+      navigate('/')
+      return true
+    } 
+    else return false
+  }
+
   const handleSubmit = async(e) => {
     e.preventDefault()
 
@@ -51,13 +75,7 @@ const Login = () => {
 
 
       if (isFormValid) {
-        const isCredentialValid = await validateCredential({ username: formData.username, password: formData.password });
-        if (isCredentialValid) {
-          //* Redirigir al usuario a la página de inicio o
-          alert("Iniciaste sesión correctamente")
-        } else {
-          alert('Las credenciales son incorrectas');
-        }
+        await validateCredential({ username: formData.username, password: formData.password });
       } else {
         alert('Todos los campos son obligatorios')
       }
@@ -67,18 +85,32 @@ const Login = () => {
     }
   }
 
+  useEffect(() => {
+    const user = loadUserFromLocalStorage();
+    if (user) {
+      dispatch(setUser(user));
+      dispatch(setAuthenticated());
+    }
+  }, [dispatch]);
+
   return (
-    <form onSubmit={handleSubmit}>
-        <label>Nombre de usuario</label>
+    <div className='container'>
+      <h1 style={{textAlign: 'center'}}>Login</h1>
+      <form onSubmit={handleSubmit}>
+        <label>Username</label>
         <input className={errors.username ? 'error' : ''} type="text" value={formData.username} name='username' onChange={handleInputChange} />
         {errors.username && <p className="error-message">{errors.username}</p>}
 
-        <label>Contraseña</label>
-        <input className={errors.password ? 'error' : ''} type="text" value={formData.password} name='password' onChange={handleInputChange} />
+        <label>Password</label>
+        <input className={errors.password ? 'error' : ''} type="password" value={formData.password} name='password' onChange={handleInputChange} />
         {errors.password && <p className="error-message">{errors.password}</p>}
 
-        <button>Enviar</button>  
-    </form>
+        <button className='register-button'>Enviar</button>
+      </form>
+      <div className="signup-link">
+        Don't have an account? <Link to="/auth/register">Create one here</Link>
+      </div>
+    </div>
   )
 }
 

@@ -1,21 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import './Navbar.css'
+import { setUnAuthenticated } from '../../redux/userSlice'
+import { removeUserFromLocalStorage } from '../../helpers/localStorage'
 
 const Navbar = () => {
-    const [isSidebarClose, setIsSidebarClose] = useState(true);
-    const [isDarkMode, setIsDarkMode] = useState(false);
+    const [isSidebarClose, setIsSidebarClose] = useState(true)
+    const [isDarkMode, setIsDarkMode] = useState(false)
+
+    const dispatch = useDispatch()
+    const authenticated = useSelector(state => state.user.authenticated)
+    console.log(authenticated)
+
+    const handleLogout = () => {
+        dispatch(setUnAuthenticated())
+        removeUserFromLocalStorage()
+    }
   
     useEffect(() => {
-      const body = document.querySelector('body');
-      body.classList.toggle('dark', isDarkMode);
+      const body = document.querySelector('body')
+      body.classList.toggle('dark', isDarkMode)
     }, [isDarkMode]);
   
     const toggleSidebar = () => {
-      setIsSidebarClose(!isSidebarClose);
+      setIsSidebarClose(!isSidebarClose)
     };
   
     const toggleDarkMode = () => {
-      setIsDarkMode(!isDarkMode);
+      setIsDarkMode(!isDarkMode)
     };
 
     return (
@@ -37,37 +50,34 @@ const Navbar = () => {
             <div className="menu-bar">
                 <div className="menu">
                     <ul className="menu-links">
-                        <li className="nav-link">
-                            <a href="#">
+                        <Link to="/">
+                            <li className="nav-link">
                                 <i className="fa fa-home fa-lg icon"></i>
                                 <span className="text nav-text">Inicio</span>
-                            </a>
-                        </li>
+                            </li>
+                        </Link>
 
-                        <li className="nav-link">
-                            <a href="#">
+                        <Link to="/perfil">   
+                            <li className="nav-link">    
                                 <i className="fa fa-user fa-lg icon"></i>
                                 <span className="text nav-text">Perfil</span>
-                            </a>
-                        </li>
+                            </li>
+                        </Link>
 
-                        <li className="nav-link">
-                            <a href="#">
+                        <Link to="/appointments">
+                            <li className="nav-link">
                                 <i className="fa fa-calendar fa-lg icon"></i>
                                 <span className="text nav-text">Turnos</span>
-                            </a>
-                        </li>
-
+                            </li>
+                        </Link>
                     </ul>
                 </div>
 
                 <div className="bottom-content">
                     <ul>
-                        <li className="">
-                            <a href="#">
-                                <i className='bx bx-log-out icon fa fa-sign-out'></i>
-                                <span className="text nav-text">Cerrar sesión</span>
-                            </a>
+                        <li style={{ cursor:'pointer' }} onClick={handleLogout}>
+                            <i className='bx bx-log-out icon fa fa-sign-out'></i>
+                            <span className="text nav-text">Cerrar sesión</span>
                         </li>
 
                         <li className="mode">

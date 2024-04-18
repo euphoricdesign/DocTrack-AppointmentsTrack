@@ -1,11 +1,12 @@
+import { ButtonCancel } from "../Button/ButtonCancel"
 
-const Appointment = ({ date, time, status }) => {
+const Appointment = ({ id, date, time, status, confirmCancel }) => {
   return (
     <tr>
       <td>{date}</td>
       <td>{time}</td>
-      <td>{status}</td>
-      <th><button>cancelar</button></th>
+      <td><span className={status === "cancelled" ? "cancelled" : "active"}>{status}</span></td>
+      <th><ButtonCancel text={"Cancelar"} confirmCancel={confirmCancel} id={id} status={status}/></th>
     </tr>
   )
 }

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { validateForm } from '../../helpers/validateForm'
 import axios from 'axios'
 import './Register.css'
+import { Link } from 'react-router-dom'
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +21,8 @@ const Register = () => {
     username: "",
     password: "",
   })
+
+  const [success, setSuccess] = useState(false)
 
   const handleInputChange = (e) => {
     const {name, value} = e.target
@@ -58,44 +61,63 @@ const Register = () => {
     setErrors(newErrors);
 
     if (isFormValid) {
-      // Enviar el formulario
       await axios.post('http://localhost:3000/users/register', formData);
-      alert('Form submitted successfully');
-    } else {
-      // Mostrar un mensaje de error o realizar alguna otra acción
-      alert('Todos los campos son obligatorios')
+      setFormData({
+        name: "",
+        email: "",
+        birthdate: "",
+        nDni: 0,
+        username: "",
+        password: "",
+      });
+      setSuccess(true)
     }
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-        <label>Nombre Completo</label>
-        <input className={errors.name ? 'error' : ''} type="text" value={formData.name} name='name' onChange={handleInputChange} />
-        {errors.name && <p className="error-message">{errors.name}</p>}
+    <div className='container'>
+      <h1 style={{textAlign: 'center'}}>Register</h1>
+      <form onSubmit={handleSubmit}>
+          <label>Full Name</label>
+          <input className={errors.name ? 'error' : ''} type="text" value={formData.name} name='name' onChange={handleInputChange} />
+          {errors.name && <p className="error-message">{errors.name}</p>}
 
-        <label>Email</label>
-        <input className={errors.email ? 'error' : ''} type="email" value={formData.email} name='email' onChange={handleInputChange} />
-        {errors.email && <p className="error-message">{errors.email}</p>}
+          <label>Email</label>
+          <input className={errors.email ? 'error' : ''} type="email" value={formData.email} name='email' onChange={handleInputChange} />
+          {errors.email && <p className="error-message">{errors.email}</p>}
 
-        <label>Fecha de Nacimiento</label>
-        <input className={errors.birthdate ? 'error' : ''} type="date" value={formData.birthdate} name='birthdate' onChange={handleInputChange} />
-        {errors.birthdate && <p className="error-message">{errors.birthdate}</p>}
+          <label>Birthdate</label>
+          <input className={errors.birthdate ? 'error' : ''} type="date" value={formData.birthdate} name='birthdate' onChange={handleInputChange} />
+          {errors.birthdate && <p className="error-message">{errors.birthdate}</p>}
 
-        <label>Número de documento</label>
-        <input className={errors.nDni ? 'error' : ''} type="number" value={formData.nDni} name='nDni' onChange={handleInputChange} />
-        {errors.nDni && <p className="error-message">{errors.nDni}</p>}
+          <label>ID Card</label>
+          <input className={errors.nDni ? 'error' : ''} type="number" value={formData.nDni} name='nDni' onChange={handleInputChange} />
+          {errors.nDni && <p className="error-message">{errors.nDni}</p>}
 
-        <label>Nombre de usuario</label>
-        <input className={errors.username ? 'error' : ''} type="text" value={formData.username} name='username' onChange={handleInputChange} />
-        {errors.username && <p className="error-message">{errors.username}</p>}
+          <label>Username</label>
+          <input className={errors.username ? 'error' : ''} type="text" value={formData.username} name='username' onChange={handleInputChange} />
+          {errors.username && <p className="error-message">{errors.username}</p>}
 
-        <label>Contraseña</label>
-        <input className={errors.password ? 'error' : ''} type="text" value={formData.password} name='password' onChange={handleInputChange} />
-        {errors.password && <p className="error-message">{errors.password}</p>}
+          <label>Password</label>
+          <input className={errors.password ? 'error' : ''} type="password" value={formData.password} name='password' onChange={handleInputChange} />
+          {errors.password && <p className="error-message">{errors.password}</p>}
 
-        <button>Enviar</button>
-        
-    </form>
+          <button className='register-button'>Send</button>
+
+          {success && (
+            <div className="success-message">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+              </svg>
+              Your account was successfully created!
+            </div>
+          )}
+      </form>
+      <div className="signup-link">
+        Already have an account? <Link to="/auth/login">Login here</Link>
+      </div>
+    </div>
   )
 }
 

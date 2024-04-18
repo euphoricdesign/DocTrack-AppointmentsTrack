@@ -1,14 +1,12 @@
-/* Estilos para el formulario */
 form {
     width: 500px;
-    margin: 10% auto;
+    margin: 40px auto;
     padding: 20px;
     background-color: #f4f4f4;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   
-  /* Estilos para las etiquetas (labels) */
   label {
     display: block;
     margin-top: 10px;
@@ -16,7 +14,6 @@ form {
     font-weight: bold;
   }
   
-  /* Estilos para los campos de entrada (inputs) */
   input {
     width: 100%;
     padding: 10px;
@@ -26,18 +23,19 @@ form {
     margin-bottom: 10px;
   }
   
-  /* Estilos para el botón (button) */
-  button {
+  .register-button {
     background-color: #2760a7;
     color: white;
     padding: 10px 20px;
+    margin-top:15px;
     border: none;
     border-radius: 3px;
     cursor: pointer;
     font-size: 16px;
+    width: 100%;
   }
   
-  button:hover {
+  .register-button:hover {
     background-color: #13498b;
   }
 
