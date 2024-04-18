@@ -6,7 +6,7 @@ const Appointment = ({ id, date, time, status, confirmCancel }) => {
       <td>{date}</td>
       <td>{time}</td>
       <td><span className={status === "cancelled" ? "cancelled" : "active"}>{status}</span></td>
-      <th><ButtonCancel text={"Cancelar"} confirmCancel={confirmCancel} id={id} status={status}/></th>
+      <td><ButtonCancel text={"Cancelar"} confirmCancel={confirmCancel} id={id} status={status}/></td>
     </tr>
   )
 }

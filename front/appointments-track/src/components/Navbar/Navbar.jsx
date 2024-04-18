@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import './Navbar.css'
+import { useDispatch } from 'react-redux'
 import { setUnAuthenticated } from '../../redux/userSlice'
 import { removeUserFromLocalStorage } from '../../helpers/localStorage'
+import './Navbar.css'
 
 const Navbar = () => {
     const [isSidebarClose, setIsSidebarClose] = useState(true)
     const [isDarkMode, setIsDarkMode] = useState(false)
 
     const dispatch = useDispatch()
-    const authenticated = useSelector(state => state.user.authenticated)
-    console.log(authenticated)
 
     const handleLogout = () => {
         dispatch(setUnAuthenticated())
@@ -21,16 +19,11 @@ const Navbar = () => {
     useEffect(() => {
       const body = document.querySelector('body')
       body.classList.toggle('dark', isDarkMode)
-    }, [isDarkMode]);
+    }, [isDarkMode])
   
     const toggleSidebar = () => {
       setIsSidebarClose(!isSidebarClose)
-    };
-  
-    const toggleDarkMode = () => {
-      setIsDarkMode(!isDarkMode)
-    };
-
+    }
     return (
     <>
         <nav className={`sidebar ${isSidebarClose ? 'close' : ''}`}>
@@ -41,7 +34,7 @@ const Navbar = () => {
                     </span>
 
                     <div className="text logo-text">
-                        <span className="name">Turnos App</span>
+                        <span className="name">DocTrack</span>
                     </div>
                 </div>
                 <i className='bx bx-chevron-right toggle fa fa-arrow-right' onClick={toggleSidebar}></i>
@@ -53,21 +46,21 @@ const Navbar = () => {
                         <Link to="/">
                             <li className="nav-link">
                                 <i className="fa fa-home fa-lg icon"></i>
-                                <span className="text nav-text">Inicio</span>
+                                <span className="text nav-text">Home</span>
                             </li>
                         </Link>
 
-                        <Link to="/perfil">   
+                        {/* <Link to="/perfil">   
                             <li className="nav-link">    
                                 <i className="fa fa-user fa-lg icon"></i>
                                 <span className="text nav-text">Perfil</span>
                             </li>
-                        </Link>
+                        </Link> */}
 
                         <Link to="/appointments">
                             <li className="nav-link">
                                 <i className="fa fa-calendar fa-lg icon"></i>
-                                <span className="text nav-text">Turnos</span>
+                                <span className="text nav-text">Appointments</span>
                             </li>
                         </Link>
                     </ul>
@@ -77,19 +70,7 @@ const Navbar = () => {
                     <ul>
                         <li style={{ cursor:'pointer' }} onClick={handleLogout}>
                             <i className='bx bx-log-out icon fa fa-sign-out'></i>
-                            <span className="text nav-text">Cerrar sesión</span>
-                        </li>
-
-                        <li className="mode">
-                            <div className="sun-moon">
-                                <i className='fa fa-moon-o bx bx-moon icon moon'></i>
-                                <i className='fa fa-sun-o bx bx-sun icon sun'></i>
-                            </div>
-                            <span className="mode-text text">{isDarkMode ? 'Light mode' : 'Dark mode'}</span>
-
-                            <div className="toggle-switch" onClick={toggleDarkMode}>
-                                <span className="switch"></span>
-                            </div>
+                            <span className="text nav-text">Logout</span>
                         </li>
                     </ul>
                 </div>

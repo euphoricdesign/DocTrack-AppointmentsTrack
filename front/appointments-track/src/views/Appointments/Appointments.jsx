@@ -69,22 +69,24 @@ const Appointments = () => {
             <button className="add-appointment">Add appointment</button>
           </Link>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Status </th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            { myAppointments.map(appointment => (
-              <Appointment key={appointment.id} id={appointment.id} date={appointment.date} time={appointment.time} status={appointment.status} confirmCancel={confirmCancel} />
-            ))
-            }
-          </tbody>
-        </table>
+        <div className="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status </th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              { myAppointments.map(appointment => (
+                <Appointment key={appointment.id} id={appointment.id} date={appointment.date} time={appointment.time} status={appointment.status} confirmCancel={confirmCancel} />
+              ))
+              }
+            </tbody>
+          </table>
+        </div>
       </div>
     ) : (
       <>

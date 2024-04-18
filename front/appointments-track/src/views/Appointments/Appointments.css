@@ -1,15 +1,33 @@
+.table-container {
+    border-collapse: collapse;
+    background: #fff;
+    margin: 0 auto;
+    text-align: center;
+    border-radius: 10px;
+    overflow: auto; 
+}
+
 table {
     border-collapse: collapse;
     width: 1200px;
 }
-th, td {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
+thead {
+    color: white;
+    background: #2760a7;
+    font-size: 15px;
+    font-weight: 400;
+}
+tbody {
+    font-weight: 400;
+    color: #6c6d6e;
+    font-size: 14px;
 }
 th {
-    background-color: #f2f2f2;
+    font-weight: 400;
 }
+th,td {
+    padding: 18px;
+}     
 
 .add-appointment {
     background-color: #2760a7;
@@ -53,7 +71,6 @@ th {
     font-size: 24px;
     font-weight: bold;
     color: #707070;
-    background-color: #f5f5f5;
     border-radius: 8px;
     padding: 20px;
     text-align: center;
@@ -75,3 +92,19 @@ th {
     margin-right: 8px;
     color: #4caf50;
   }
+
+  .table-container::-webkit-scrollbar {
+    width: 4px;
+    height: 6px;
+    border-radius: 50px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #957FEF;
+    border-radius: 50px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: #7161EF;
+    border-radius: 50px;
+}

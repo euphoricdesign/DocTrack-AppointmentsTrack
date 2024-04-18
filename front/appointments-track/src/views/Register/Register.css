@@ -49,3 +49,9 @@ form {
     font-size: 14px;
     margin-bottom: 15px;
   }
+  
+  .warning-message {
+    color: rgb(249, 190, 95);
+    font-size: 14px;
+    margin-bottom: 15px;
+  }

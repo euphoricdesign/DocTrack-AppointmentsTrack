@@ -1,30 +1,10 @@
 @import url(//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);
-
-/* Google Font Import - Poppins */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
-
-
-:root {
-  /* ===== Colors ===== */
-  --body-color: #f3f9ff;
-  --sidebar-color: #fff;
-  --primary-color: #2760a7;
-  --primary-color-light: #f3f9ff;
-  --toggle-color: #ddd;
-  --text-color: #707070;
-
-  /* ====== Transition ====== */
-  --tran-03: all 0.2s ease;
-  --tran-03: all 0.3s ease;
-  --tran-04: all 0.3s ease;
-  --tran-05: all 0.3s ease;
-}
 
 a {
   text-decoration: none;
 }
 
-/* ===== Sidebar ===== */
 .sidebar {
   position: fixed;
   top: 0;
@@ -32,15 +12,14 @@ a {
   height: 100%;
   width: 250px;
   padding: 10px 14px;
-  background: var(--sidebar-color);
-  transition: var(--tran-05);
+  background: #fff;
+  transition: all 0.3s ease;
   z-index: 100;
 }
 .sidebar.close {
   width: 88px;
 }
 
-/* ===== Reusable code - Here ===== */
 .sidebar li {
   height: 50px;
   list-style: none;
@@ -67,8 +46,8 @@ a {
 
 .sidebar .text,
 .sidebar .icon {
-  color: var(--text-color);
-  transition: var(--tran-03);
+  color: #707070;
+  transition: all 0.3s ease;
 }
 
 .sidebar .text {
@@ -80,7 +59,6 @@ a {
 .sidebar.close .text {
   opacity: 0;
 }
-/* =========================== */
 
 .sidebar header {
   position: relative;
@@ -124,15 +102,15 @@ header .image-text .profession {
   transform: translateY(-50%) rotate(180deg);
   height: 25px;
   width: 25px;
-  background-color: var(--primary-color);
-  color: var(--sidebar-color);
+  background-color: #2760a7;
+  color: #fff;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 15px;
   cursor: pointer;
-  transition: var(--tran-05);
+  transition: all 0.3s ease;
 }
 
 .sidebar.close .toggle {
@@ -145,9 +123,9 @@ header .image-text .profession {
 
 .sidebar li.search-box {
   border-radius: 6px;
-  background-color: var(--primary-color-light);
+  background-color: #f3f9ff;
   cursor: pointer;
-  transition: var(--tran-05);
+  transition: all 0.3s ease;
 }
 
 .sidebar li.search-box input {
@@ -155,12 +133,12 @@ header .image-text .profession {
   width: 100%;
   outline: none;
   border: none;
-  background-color: var(--primary-color-light);
-  color: var(--text-color);
+  background-color:#f3f9ff;
+  color: #707070;
   border-radius: 6px;
   font-size: 17px;
   font-weight: 500;
-  transition: var(--tran-05);
+  transition: all 0.3s ease;
 }
 .sidebar li a {
   list-style: none;
@@ -172,15 +150,15 @@ header .image-text .profession {
   width: 100%;
   border-radius: 6px;
   text-decoration: none;
-  transition: var(--tran-03);
+  transition: all 0.3s ease;;
 }
 
 .sidebar li a:hover {
-  background-color: var(--primary-color);
+  background-color: #2760a7;
 }
 .sidebar li a:hover .icon,
 .sidebar li a:hover .text {
-  color: var(--sidebar-color);
+  color: #fff;;
 }
 
 .sidebar .menu-bar {
@@ -192,57 +170,6 @@ header .image-text .profession {
 }
 .menu-bar::-webkit-scrollbar {
   display: none;
-}
-.sidebar .menu-bar .mode {
-  border-radius: 6px;
-  background-color: var(--primary-color-light);
-  position: relative;
-  transition: var(--tran-05);
-}
-
-.menu-bar .mode .sun-moon {
-  height: 50px;
-  width: 60px;
-}
-
-.mode .sun-moon i {
-  position: absolute;
-}
-.mode .sun-moon i.sun {
-  opacity: 0;
-}
-
-.menu-bar .bottom-content .toggle-switch {
-  position: absolute;
-  right: 0;
-  height: 100%;
-  min-width: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
-  cursor: pointer;
-}
-.toggle-switch .switch {
-  position: relative;
-  height: 22px;
-  width: 40px;
-  border-radius: 25px;
-  background-color: var(--toggle-color);
-  transition: var(--tran-05);
-}
-
-.switch::before {
-  content: "";
-  position: absolute;
-  height: 15px;
-  width: 15px;
-  border-radius: 50%;
-  top: 50%;
-  left: 5px;
-  transform: translateY(-50%);
-  background-color: var(--sidebar-color);
-  transition: var(--tran-04);
 }
 
 

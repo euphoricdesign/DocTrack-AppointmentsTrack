@@ -14,6 +14,7 @@ const AppointmentForm = () => {
   })
 
   const [success, setSuccess] = useState(false)
+  const [isDateValid, setIsDateValid] = useState(true)
 
   const user = useSelector(state => state.user.user)
 
@@ -62,6 +63,8 @@ const AppointmentForm = () => {
         setSuccess(true)
       } catch (error) {
         console.log(error);
+        setIsDateValid(false)
+
       }
     } 
   }
@@ -73,10 +76,12 @@ const AppointmentForm = () => {
         <label>Date</label>
         <input className={errors.date ? 'error' : ''} type="date" value={formData.date} name='date' onChange={handleInputChange} />
         {errors.date && <p className="error-message">{errors.date}</p>}
+        {!isDateValid && <p className='error-message '>No se pueden programar turnos los fines de semana.</p>}
 
         <label>Time</label>
         <input className={errors.time ? 'error' : ''} type="time" value={formData.time} name='time' onChange={handleInputChange} />
         {errors.time && <p className="error-message">{errors.time}</p>}
+        {!isDateValid && <p className='error-message'>El horario de atención es de 9:00 a 19:00</p>}
 
         <button className='register-button'>Send</button>
         {success && (
